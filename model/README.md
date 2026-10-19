@@ -16,7 +16,7 @@ Build in progress on 19 October 2026. The trained student is **not serving yet**
 | ROUGE | 0.3691 | Pending | Pending |
 | Measured endpoint latency | Pending | Pending | Pending |
 
-These are separate evaluation measures, not a single accuracy score. Student improvement and speed claims await measured results.
+These are separate evaluation measures, not a single accuracy score. Student improvement and speed claims await measured results. The separate fallback demo recorded 13 calls across 3 chats: median 6.15 s (range 2.94–18.85 s), including tool turns. This is gpt-oss-120b latency, not student or GLM teacher latency.
 
 ## Pipeline
 
@@ -55,26 +55,23 @@ SLM ID: **pending**. Deployment ID: **pending**. Trained endpoint name: **pendin
 - For `tool_calls`, append the complete assistant message, execute or simulate each declared tool, then append `{ "role": "tool", "tool_call_id": "<returned id>", "content": "<JSON result string>" }` and call again. Keep the full conversation. Show text when there are no tool calls. The supplied clients make one call and never execute tools.
 - Demo tool results are fictional fixtures. Do not claim that a reset, refund or account change actually happened.
 
-An illustrative request/response (not a measured trained-model transcript):
+Example request (requires `jq`; run from the repository root with the environment below):
 
-```json
-{
-  "model": "REPLACE_WITH_TRAINED_ENDPOINT_NAME",
-  "messages": [
-    {"role": "system", "content": "<exact task_description from job_description.json>"},
-    {"role": "user", "content": "What does the Team plan cost?"}
-  ],
-  "tools": ["<the four full tool objects from job_description.json>"],
-  "temperature": 0,
-  "max_tokens": 1024
-}
+```sh
+jq --arg model "$DISTIL_MODEL" '{model: $model,
+  messages: [{role: "system", content: .task_description},
+             {role: "user", content: "What does the Team plan cost?"}],
+  tools: .tools, temperature: 0, max_tokens: 1024}' model/job_description.json |
+curl --fail-with-body "$DISTIL_BASE_URL/chat/completions" \
+  -H "Authorization: Bearer $DISTIL_API_KEY" \
+  -H 'Content-Type: application/json' --data-binary @-
 ```
+
+Illustrative response excerpt (not a measured trained-model transcript):
 
 ```json
 {"choices":[{"message":{"role":"assistant","content":"Team costs 8 EUR per seat per month. Yearly billing includes two months free."}}]}
 ```
-
-The clients below expand the exact system prompt and tool objects for you.
 
 ## Run locally / keep warm
 

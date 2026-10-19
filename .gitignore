@@ -1,0 +1,10 @@
+.env
+.env.*
+!.env.example
+*.key
+.key
+model.tar
+__pycache__/
+*.pyc
+node_modules/
+.worktrees/

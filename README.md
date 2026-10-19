@@ -21,6 +21,10 @@ A hackathon customer-support web app for handling login, subscription, and billi
 
 We are starting with the [Brightpath support dataset](https://github.com/distil-labs/distil-mutators-support-dataset), which includes seed conversations, evaluation cases, tool schemas, and mutator configurations.
 
+## Demo use case
+
+The first demo focuses on **Invoice Detective**: investigate a suspicious charge, identify the correct invoice, and open a billing case. See the [use-case brief](docs/use-case-invoice-detective.md) for the scenario, UI, model behavior, data plan, and evaluation criteria.
+
 ## Status
 
-Initial project setup. Application code and training results will follow.
+Initial project setup. The first demo use case is defined; application code and training results will follow.

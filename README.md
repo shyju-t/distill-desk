@@ -25,6 +25,13 @@ DISTIL_MODEL=your-model-id
 
 The first adapter in [src/lib/provider.ts](src/lib/provider.ts) uses an OpenAI-compatible chat-completions wire format. Change `OpenAICompatibleProvider.complete` and `normalizeOpenAIResponse` when Distil Labs supplies a different endpoint contract. The rest of the app uses the `ChatProvider` interface. Never prefix the API key with `NEXT_PUBLIC_`.
 
+## Demo use case
+
+The first demo focuses on **Invoice Detective**: investigate a suspicious charge, identify the correct invoice, and open a billing case. See the [use-case brief](docs/use-case-invoice-detective.md) for the scenario, UI, model behavior, data plan, and evaluation criteria.
+
+## Status
+
+Initial project setup. The first demo use case is defined; application code and training results will follow.
 ## API
 
 `POST /api/chat` accepts `{"messages":[{"role":"user","content":"I was charged twice this month."}]}`.
